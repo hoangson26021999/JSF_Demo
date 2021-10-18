@@ -31,7 +31,9 @@
                 </h:column>
                 <h:column>
                     <c:facet name="header">Date_of_birth</c:facet>
-                    <h:outputText value="#{student.getDate_of_birth()}"/>
+                    <h:outputText value="#{student.getDate_of_birth()}">
+                        <c:converter converterId="DateConverter" />
+                    </h:outputText>
                 </h:column>
                  <h:column>
                      <c:facet name="header">Email</c:facet>
@@ -45,29 +47,40 @@
     <h:form id = "input-form" >
         <h:form rendered="#{studentTable.currentStudent != null}">
 
-            <h:outputText value="Id" /> <br> </br>
+            <h:outputText value="Id" /> <br/>
             <h:inputText  value="#{studentTable.currentStudent.id}" readonly="true"></h:inputText> <br/>
 
-            <h:outputText value="Name" /><br> </br>
+            <h:outputText value="Name" /><br/>
             <!-- NGuyen vAn a -> Nguyen Van A -->
-            <h:inputText  value="#{studentTable.currentStudent.name}" required="true"  ><c:ajax listener="#{studentTable.submit()}" /></h:inputText><br/>
+            <h:inputText id="name" value="#{studentTable.currentStudent.name}" required="true"  >
+                <c:ajax listener="#{studentTable.submit()}" render="name"/>
+                <c:converter converterId="NameConverter"/>
+            </h:inputText><br/>
 
-            <h:outputText value="Age" /><br> </br>
-            <h:inputText  value="#{studentTable.currentStudent.age}" required="true"><c:ajax listener="#{studentTable.submit()}"/></h:inputText><br/>
+            <h:outputText value="Age" /><br/>
+            <h:inputText id="age" value="#{studentTable.currentStudent.age}" required="true">
+                <c:ajax listener="#{studentTable.submit()}" render="age-invalid age"/>
+                <c:validator validatorId="AgeValidator" />
+            </h:inputText>
+            <h:message id="age-invalid" for="age" style=" color: red" />
+            <br/>
 
-            <h:outputText value="Birth day" /><br> </br>
-            <!--ddMMyyyy / dd/MM/yyyy / dd-MM-yyyy -> dd-MM-yyyy-->
-            <h:inputText value="#{studentTable.currentStudent.date_of_birth}"  ><c:ajax listener="#{studentTable.submit()}"/></h:inputText><br/>
+            <h:outputText value="Birth day" /><br/>
+            <h:inputText id = "date" value="#{studentTable.currentStudent.date_of_birth}" required="true" >
+                <c:ajax listener="#{studentTable.submit()}" render="date-invalid date"/>
+                <c:converter converterId="DateConverter" />
+            </h:inputText>
+            <h:message id="date-invalid" for="date" style=" color: red" />
+            <br/>
 
             <h:outputText value="Email" /><br> </br>
-            <h:inputText value="#{studentTable.currentStudent.email}"  >
+            <h:inputText id="email" value="#{studentTable.currentStudent.email}"  >
                 <c:ajax listener="#{studentTable.submit()}"/>
-                <c:converter converterId="EmailConverter" />\?"
-                
+                <c:converter converterId="EmailConverter" />
             </h:inputText><br/>
 
             <h:commandButton value="Back" >
-                <c:ajax event="click" render="table-form input-form" listener="#{studentTable.back()}"> </c:ajax>
+                <c:ajax event="click" render="table-form input-form" listener="#{studentTable.back}"> </c:ajax>
             </h:commandButton>
         </h:form>
     </h:form>

@@ -4,10 +4,9 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import synergix.jsf_demo_2.PostgresData.PostgresData;
 
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ public class StudentTable implements Serializable {
     public void openfixingStudent(Student a) {
         currentStudent = a ;
     }
+
     public void openaddingStudent() throws SQLException {
         currentStudent = new Student() ;
         currentStudent.setId(DataBase.maxId()+1);
@@ -37,12 +37,10 @@ public class StudentTable implements Serializable {
     }
 
     public void submit() throws SQLException {
-            DataBase.fixStudent(currentStudent);
+        DataBase.fixStudent(currentStudent);
     }
 
     public void back()  {
-        // reload
-        students = DataBase.getAllStudent();
         // clean currentStudent
         currentStudent = null;
     }

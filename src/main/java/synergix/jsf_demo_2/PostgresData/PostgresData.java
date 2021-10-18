@@ -14,9 +14,6 @@ public class PostgresData implements Serializable {
     private Connection db;
     private Statement query ;
 
-    public PostgresData() throws SQLException {
-    }
-
     public void open() throws SQLException {
         db =  DriverManager.getConnection("jdbc:postgresql://localhost:5432/Student", "postgres", "hoangson99");
         query = db.createStatement();
@@ -27,12 +24,11 @@ public class PostgresData implements Serializable {
     }
 
     public ArrayList<Student> getAllStudent() {
-        System.out.println("99999999999999999999999999999999999999");
         ArrayList<Student> table = new ArrayList<>() ;
         try {
             ResultSet student_table = query.executeQuery("SELECT id , name , age , date_of_birth ,email from student_table");
             while (student_table.next()) {
-                table.add(new Student(student_table.getInt(1) , student_table.getString(2) , student_table.getInt(3) , student_table.getString(4), student_table.getString(5))) ;
+                table.add(new Student(student_table.getInt(1) , student_table.getString(2) , student_table.getInt(3) , student_table.getDate(4), student_table.getString(5))) ;
             }
         } catch (SQLException e) {
             e.printStackTrace();
