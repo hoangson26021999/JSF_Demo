@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:c="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Home Controler</title>
+</h:head>
+
+<h:body>
+<h:outputText value="Home Controller" style="font-size:40px; color: black; font-weight:bold" />
+<h:form id = "home">
+    <h:form rendered="#{HomeControler.viewID == null}">
+        <h:commandButton value="Student Management">
+            <c:ajax listener="#{HomeControler.goStudentManagement()}" render="home"/>
+        </h:commandButton>
+        <h:commandButton value="Class Management">
+            <c:ajax listener="#{HomeControler.goClassManagement()}" render="home" />
+        </h:commandButton>
+    </h:form>
+
+    <h:panelGrid  rendered="#{HomeControler.viewID.equals('Student Management')}">
+        <ui:include src="studentManagement.xhtml"/>
+        <h:commandButton value="Back" >
+            <c:ajax listener="#{HomeControler.back()}" render="home"/>
+        </h:commandButton>
+    </h:panelGrid >
+
+    <h:panelGrid rendered="#{HomeControler.viewID.equals('Class Management')}">
+        <ui:include src="classManagement.xhtml"/>
+        <h:commandButton value="Back">
+            <c:ajax listener="#{HomeControler.back()}" render="home"/>
+        </h:commandButton>
+    </h:panelGrid>
+</h:form>
+</h:body>
+</html>
