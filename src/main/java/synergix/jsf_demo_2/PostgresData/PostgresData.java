@@ -1,5 +1,6 @@
 package synergix.jsf_demo_2.PostgresData;
 
+import synergix.jsf_demo_2.Class;
 import synergix.jsf_demo_2.Student;
 
 import javax.enterprise.context.SessionScoped;
@@ -8,14 +9,13 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 
-@Named("DataBase")
-@SessionScoped
+
 public class PostgresData implements Serializable {
     private Connection db;
     private Statement query ;
 
     public void open() throws SQLException {
-        db =  DriverManager.getConnection("jdbc:postgresql://localhost:5432/Student", "postgres", "hoangson99");
+        db =  DriverManager.getConnection("jdbc:postgresql://localhost:5432/MyStudent", "postgres", "hoangson99");
         query = db.createStatement();
     }
 
@@ -29,6 +29,19 @@ public class PostgresData implements Serializable {
             ResultSet student_table = query.executeQuery("SELECT id , name , age , date_of_birth ,email from student_table");
             while (student_table.next()) {
                 table.add(new Student(student_table.getInt(1) , student_table.getString(2) , student_table.getInt(3) , student_table.getDate(4), student_table.getString(5))) ;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return table ;
+    }
+
+    public ArrayList<Class> getAllClasses() {
+        ArrayList<Class> table = new ArrayList<>() ;
+        try {
+            ResultSet class_table = query.executeQuery("SELECT id , name , monitor  from class_table");
+            while (class_table.next()) {
+                table.add(new Class(class_table.getInt(1) , class_table.getString(2) , class_table.getInt(3)));
             }
         } catch (SQLException e) {
             e.printStackTrace();

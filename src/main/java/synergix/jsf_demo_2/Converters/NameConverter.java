@@ -1,11 +1,9 @@
-package synergix.jsf_demo_2.converters;
+package synergix.jsf_demo_2.Converters;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import java.util.Locale;
 
 @FacesConverter("NameConverter")
 public class NameConverter implements Converter {

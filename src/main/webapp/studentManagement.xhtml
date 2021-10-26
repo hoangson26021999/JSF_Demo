@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:cus ="http://java.sun.com/jsf/composite/input">
+
+<h:body>
+    <ui:component>
+        <h:outputText value="Student Mangement" style="font-size:20px; color: red;" />
+        <h:commandButton value="Add Student" action="#{studentTable.openaddingStudent()}" style=" position: relative; left: 50px;" />
+        <h:form id="table-form">
+            <c:phaseListener type="synergix.jsf_demo_2.PhaseListener"/>
+            <h:form  rendered="#{studentTable.currentStudent == null}" >
+                 <h:dataTable   value="#{studentTable.getStudents()}" var="student" border="2"
+                             cellspacing="1" cellpadding="1">
+                    <h:column>
+                        <c:facet name="header">Id</c:facet>
+                        <h:commandButton value="#{student.getId()}" action="#{studentTable.openfixingStudent(student)}"/>
+                        <h:commandButton value="Delete" >
+                            <c:ajax render="@all" listener="#{studentTable.deleteStudent(student.getId())}"/>
+                        </h:commandButton>
+                    </h:column>
+                    <h:column>
+                        <c:facet name="header">Name</c:facet>
+                        <h:outputText value="#{student.getName()}"/>
+                    </h:column>
+                    <h:column>
+                        <c:facet name="header">Age</c:facet>
+                        <h:outputText value="#{student.getAge()}"/>
+                    </h:column>
+                    <h:column>
+                        <c:facet name="header">Date_of_birth</c:facet>
+                        <h:outputText value="#{student.getDate_of_birth()}">
+                            <c:converter converterId="DateConverter" />
+                        </h:outputText>
+                    </h:column>
+                     <h:column>
+                         <c:facet name="header">Email</c:facet>
+                         <h:outputText value="#{student.getEmail()}"/>
+                     </h:column>
+                </h:dataTable>
+
+            </h:form>
+        </h:form>
+
+        <h:form id="input-form" >
+            <h:form rendered="#{studentTable.currentStudent != null}">
+                <h:outputText value="Id" /> <br/>
+                <h:inputText  value="#{studentTable.currentStudent.id}" readonly="true"></h:inputText> <br/>
+
+                <cus:name value="#{studentTable.currentStudent.name}"
+                          listener="#{studentTable.submit()}"
+                          converterID="NameConverter"/>
+
+                <h:outputText value="Age" /><br/>
+                <h:inputText id="age" value="#{studentTable.currentStudent.age}" required="true">
+                    <c:ajax listener="#{studentTable.submit()}" render="age-valid age"/>
+                    <c:validator validatorId="AgeValidator" />
+                </h:inputText>
+                <h:message id="age-valid" for="age" style=" color: red" /> <br/>
+
+                <h:outputText value="Birth day" /><br/>
+                <h:inputText id="date" value="#{studentTable.currentStudent.date_of_birth}" required="true" >
+                    <c:ajax listener="#{studentTable.submit()}" render="date-valid date"/>
+                    <c:converter converterId="DateConverter" />
+                </h:inputText>
+                <h:message id="date-valid" for="date" style=" color: red" /> <br/>
+
+
+                <h:outputText value="Email" /><br> </br>
+                <h:inputText id="email" value="#{studentTable.currentStudent.email}"  >
+                    <c:ajax listener="#{studentTable.submit()}" render="email"/>
+                    <c:converter converterId="EmailConverter" />
+                </h:inputText> <br/>
+
+
+                <h:commandButton value="Back" >
+                    <c:ajax render="@all" listener="#{studentTable.back}"/>
+                </h:commandButton>
+            </h:form>
+        </h:form>
+    </ui:component>
+</h:body>
+</html>

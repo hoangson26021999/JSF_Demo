@@ -48,10 +48,13 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/javax.enterprise/cdi-api -->
         <dependency>
-            <groupId>repository.javax.enterprise</groupId>
+            <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

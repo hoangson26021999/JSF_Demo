@@ -1,4 +1,4 @@
-package synergix.jsf_demo_2.converters;
+package synergix.jsf_demo_2.Converters;
 
 import java.net.URI;
 import java.net.URISyntaxException;

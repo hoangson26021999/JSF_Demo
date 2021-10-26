@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  xml:lang="en" lang="en"
+      xmlns:c="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite = "http://java.sun.com/jsf/composite" >
+<h:head>
+    <title>Form Name Input </title>
+</h:head>
+<body>
+<composite:interface>
+    <!--<composite:attribute name="name" required="true"/>-->
+    <composite:attribute name="value" required="true"/>
+    <composite:attribute name="listener" method-signature="java.lang.String action()" required="true"/>
+    <composite:attribute name="converterID" required="true"/>
+</composite:interface>
+<composite:implementation>
+    <h:outputText value="#{cc.attrs.name}" /><br/>
+    <!-- NGuyen vAn a -> Nguyen Van A -->
+    <h:inputText id="name" value="#{cc.attrs.value}" required="true"  >
+        <c:ajax listener="#{cc.attrs.listener}" render="name"/>
+        <c:converter converterId="#{cc.attrs.converterID}"/>
+    </h:inputText><br/>
+</composite:implementation>
+</body>
+</html>

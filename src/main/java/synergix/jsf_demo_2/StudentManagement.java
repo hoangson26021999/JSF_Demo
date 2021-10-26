@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @Named("studentTable")
 @SessionScoped
-public class StudentTable implements Serializable {
+public class StudentManagement implements Serializable {
 
     @Inject
     private PostgresData DataBase ;
@@ -41,6 +41,8 @@ public class StudentTable implements Serializable {
     }
 
     public void back()  {
+        //reload
+        students = DataBase.getAllStudent();
         // clean currentStudent
         currentStudent = null;
     }
