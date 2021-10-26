@@ -1,19 +1,19 @@
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
 @Named("HomeControler")
 @SessionScoped
 public class HomeControler implements Serializable {
+    @Inject
     private Conversation conversation;
 
     private String viewID;
 
     public void goStudentManagement() {
-
         conversation.begin();
-
         viewID = "Student Management" ;
     }
     public void goClassManagement() {

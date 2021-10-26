@@ -31,7 +31,7 @@ public class StudentManagement implements Serializable {
 
     public void openaddingStudent() throws SQLException {
         currentStudent = new Student() ;
-        currentStudent.setId(DataBase.maxId()+1);
+        currentStudent.setId(DataBase.maxIdStudent()+1);
         // add
         DataBase.addStudent(currentStudent);
     }

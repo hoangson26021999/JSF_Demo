@@ -24,14 +24,14 @@
 
     <h:panelGrid  rendered="#{HomeControler.viewID.equals('Student Management')}">
         <ui:include src="studentManagement.xhtml"/>
-        <h:commandButton value="Back" >
+        <h:commandButton value="Back to home" >
             <c:ajax listener="#{HomeControler.back()}" render="home"/>
         </h:commandButton>
     </h:panelGrid >
 
     <h:panelGrid rendered="#{HomeControler.viewID.equals('Class Management')}">
         <ui:include src="classManagement.xhtml"/>
-        <h:commandButton value="Back">
+        <h:commandButton value="Back to home">
             <c:ajax listener="#{HomeControler.back()}" render="home"/>
         </h:commandButton>
     </h:panelGrid>

@@ -1,34 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:c="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:cus="http://java.sun.com/jsf/composite/input">
 
 <h:body>
-    <h:form id="class-form">
-        <c:phaseListener type="synergix.jsf_demo_2.PhaseListener"/>
-        <h:form >
-            <h:outputText value="Class Mangement" style="font-size:20px; color: red;" />
-            <h:dataTable   value="#{classTable.getClasses()}" var="class" border="2"
-                           cellspacing="1" cellpadding="1">
-                <h:column>
-                    <c:facet name="header">Id</c:facet>
-                    <h:outputText value="#{class.getId()}"/>
-                </h:column>
-                <h:column>
-                    <c:facet name="header">Name</c:facet>
-                    <h:outputText value="#{class.getName()}"/>
-                </h:column>
-                <h:column>
-                    <c:facet name="header">MonitorId</c:facet>
-                    <h:outputText value="#{class.getMonitorid()}"/>
-                </h:column>
-            </h:dataTable>
+    <ui:component>
+        <h:outputText value="Class Mangement" style="font-size:20px; color: red;" />
+        <h:form>
+            <c:phaseListener type="synergix.jsf_demo_2.PhaseListener"/>
+            <h:form rendered="#{classTable.currentClass == null}" >
+                <h:commandButton value="Add Class" action="#{classTable.openaddingClass()}" style=" position: relative; left: 50px;" />
+                <h:dataTable   value="#{classTable.getClasses()}" var="class" border="2"
+                               cellspacing="1" cellpadding="1">
+                    <h:column>
+                        <c:facet name="header">Id</c:facet>
+                        <h:commandButton value="#{class.getId()}" action="#{classTable.openfixingClass(class)}"/>
+                        <h:commandButton value="Delete" >
+                            <c:ajax render="@all" listener="#{classTable.deleteClass(class.getId())}"/>
+                        </h:commandButton>
+                    </h:column>
+                    <h:column>
+                        <c:facet name="header">Name</c:facet>
+                        <h:outputText value="#{class.getName()}"/>
+                    </h:column>
+                    <h:column>
+                        <c:facet name="header">MonitorId</c:facet>
+                        <h:outputText value="#{class.getMonitorid()}"/>
+                    </h:column>
+                    <h:column>
+                        <c:facet name="header">Start_Date</c:facet>
+                        <h:outputText value="#{class.getStart_date()}"/>
+                    </h:column>
+                    <h:column>
+                        <c:facet name="header">End_Date</c:facet>
+                        <h:outputText value="#{class.getEnd_date()}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
         </h:form>
-    </h:form>
+
+        <h:form>
+            <h:form rendered="#{classTable.currentClass != null}">
+                <h:outputText value="Id" /> <br/>
+                <h:inputText  value="#{classTable.currentClass.id}" readonly="true"></h:inputText> <br/>
+
+                <h:outputText value="Class" /><br/>
+                <cus:name value="#{classTable.currentClass.name}"
+                          listener="#{classTable.submit()}"
+                          converterID="NameConverter"/>
+
+                <h:outputText value="Monitor" /><br/>
+                <h:inputText id="monitor" value="#{classTable.currentClass.monitorid}" required="true">
+                    <c:ajax listener="#{classTable.submit()}" render="monitor"/>
+                </h:inputText><br/>
+
+                <h:outputText value="Start_date" /><br/>
+                <h:inputText id="start_date" value="#{classTable.currentClass.start_date}" required="true" >
+                    <c:ajax listener="#{classTable.submit()}" render="date-valid start_date"/>
+                    <c:converter converterId="DateConverter" />
+                </h:inputText>
+                <h:message id="date-valid" for="start_date" style=" color: red" /> <br/>
+
+                <h:outputText value="End_date" /><br/>
+                <h:inputText id="end_date" value="#{classTable.currentClass.end_date}" required="true" >
+                    <c:ajax listener="#{classTable.submit()}" render="end-date-valid end_date"/>
+                    <c:converter converterId="DateConverter" />
+                </h:inputText>
+                <h:message id="end-date-valid" for="end_date" style=" color: red" /> <br/>
+
+                <h:commandButton value="Back" >
+                    <c:ajax render="@all" listener="#{classTable.back}"/>
+                </h:commandButton>
+            </h:form>
+        </h:form>
+    </ui:component>
 
 </h:body>
 </html>

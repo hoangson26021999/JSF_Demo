@@ -39,9 +39,9 @@ public class PostgresData implements Serializable {
     public ArrayList<Class> getAllClasses() {
         ArrayList<Class> table = new ArrayList<>() ;
         try {
-            ResultSet class_table = query.executeQuery("SELECT id , name , monitor  from class_table");
+            ResultSet class_table = query.executeQuery("SELECT id , name , monitor , start_date , end_date from class_table");
             while (class_table.next()) {
-                table.add(new Class(class_table.getInt(1) , class_table.getString(2) , class_table.getInt(3)));
+                table.add(new Class(class_table.getInt(1) , class_table.getString(2) , class_table.getInt(3),class_table.getDate(4) , class_table.getDate(5)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class PostgresData implements Serializable {
         return table ;
     }
 
-    public int maxId() throws SQLException {
+    public int maxIdStudent() throws SQLException {
 
         ResultSet maxid = query.executeQuery("SELECT MAX(id) FROM student_table");
         int max = -1 ;
@@ -57,6 +57,41 @@ public class PostgresData implements Serializable {
             max = maxid.getInt(1) ;
         }
         return max ;
+
+    }
+    public int maxIdClass() throws SQLException {
+
+        ResultSet maxid = query.executeQuery("SELECT MAX(id) FROM class_table");
+        int max = -1 ;
+        while (maxid.next()) {
+            max = maxid.getInt(1) ;
+        }
+        return max ;
+
+    }
+
+    public void deleteClass(int idClasss) throws SQLException {
+        // Cau lenh delete vao database
+        String deletequery = "DELETE FROM class_table WHERE id = " + idClasss ;
+        query.executeUpdate(deletequery);
+    }
+
+    public void addClass(Class a) throws SQLException {
+
+        // Cau lenh add vao database
+        String addquery = "INSERT INTO class_table( id, name , monitor , start_date , end_date) "
+                + "VALUES (" + a.getId() + ",'"+ a.getName() + "',"+a.getMonitorid()+",'" +a.getStart_date()+"','"+a.getEnd_date()+"')" ;
+        query.executeUpdate(addquery);
+
+    }
+
+    public void fixClass(Class a) throws SQLException {
+
+        // Cau lenh query update
+        String fixquery = "UPDATE class_table "
+                + "SET " + "id =" + a.getId() + ",name = '"+ a.getName() + "'" +", monitor = " + a.getMonitorid()+",start_date = '" + a.getStart_date() +"',end_date = '"+ a.getEnd_date()+"'"
+                + "WHERE id =" + a.getId();
+        query.executeUpdate(fixquery);
 
     }
 
